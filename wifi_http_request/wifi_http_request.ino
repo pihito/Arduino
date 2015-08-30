@@ -8,8 +8,11 @@
 
 #include <ESP8266WiFi.h>
 
-const char* ssid     = "Livebox-9e38";
-const char* password = "EDE79F89D642E0117543DD28A6";
+//const char* ssid     = "Livebox-9e38";
+//const char* password = "EDE79F89D642E0117543DD28A6";
+
+const char* ssid     = "Mutualab Coworking 1";
+const char* password = "maintenantautravail";
 
 //const char* ssid     = "DARKSIDE";
 //const char* password = "8353481dd463";
@@ -44,7 +47,7 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-
+  
   Serial.println("");
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
