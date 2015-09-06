@@ -107,7 +107,7 @@ void gettemperature() {
     // Reading temperature for humidity takes about 250 milliseconds!
     // Sensor readings may also be up to 2 seconds 'old' (it's a very slow sensor)
     humidity = dht.readHumidity();          // Read humidity (percent)
-    temp_f = dht.readTemperature(true);     // Read temperature as Fahrenheit
+    temp_f = dht.readTemperature(false);     // Read temperature as Fahrenheit
     // Check if any reads failed and exit early (to try again).
     if (isnan(humidity) || isnan(temp_f)) {
       Serial.println("Failed to read from DHT sensor!");
@@ -133,7 +133,14 @@ void loop() {
     Serial.println(humidity);
     mqttClient.connect("ESP1");
     char temp_c[20];
-    sprintf(temp_c, "%f", temp_f);
-    mqttClient.publish("node/temp",temp_c);           
+    char hum_c[20];
+    dtostrf(temp_f,7, 2, temp_c);
+    dtostrf(humidity,7, 2, hum_c);
+    String jsonStr = "{ \"tmp\": ";
+    jsonStr.concat(temp_c);
+    jsonStr.concat(",\"hum\":");
+    jsonStr.concat(hum_c);
+    jsonStr.concat("}");
+    mqttClient.publish("node/temp",jsonStr);           
 }
 
