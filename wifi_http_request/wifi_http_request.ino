@@ -1,5 +1,10 @@
+#include <MQTT.h>
+#include <PubSubClient.h>
+
 #include <ESP8266WiFi.h>
-#include "DHT.h"
+#include <DHT.h>
+
+
 
 #define DHTTYPE DHT22
 #define DHTPIN  2
@@ -13,8 +18,8 @@
 //const char* ssid     = "DARKSIDE";
 //const char* password = "8353481dd463";
 
-const char* ssid     = "SEBHOME_SENSOR";
-const char* password = "key_sensor_my";
+const char* ssid     = "MySensorNetwork";
+const char* password = "SebSensor";
 
 const char* host = "www.google.fr";
 const char* streamId   = "....................";
@@ -23,14 +28,16 @@ const char* privateKey = "....................";
 
  
 // server address:
-//char server[] = "www.arduino.cc";
-char server[] = "192.168.61.1";
-//IPAddress server(64,131,82,241);
 
-WiFiClient client;
+char server[] = "192.168.61.1";
+char mqttServer[] = "192.168.61.1";
+
+
+WiFiClient wclient;
+PubSubClient mqttClient(wclient, mqttServer);
 
 unsigned long lastConnectionTime = 0;            // last time you connected to the server, in milliseconds
-const unsigned long postingInterval = 100L * 1000L; // delay between updates, in milliseconds
+const unsigned long postingInterval = 10L * 1000L; // delay between updates, in milliseconds
 
 float humidity, temp_f;
 unsigned long previousMillis = 0;        // will store last temp was read
@@ -48,22 +55,22 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
   
-  /*WiFi.begin(ssid, password);
+  WiFi.begin(ssid, password);
   
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-  }*/
+  }
   dht.begin();
-  //Serial.println("");
-  //Serial.println("WiFi connected");  
-  //Serial.println("IP address: ");
-  //Serial.println(WiFi.localIP());
+  Serial.println("");
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 
 
-void httpRequest() {
+/*void httpRequest() {
   // close any connection before send a new request.
   // This will free the socket on the WiFi shield
   client.stop();
@@ -84,7 +91,7 @@ void httpRequest() {
     // if you couldn't make a connection:
     Serial.println("connection failed");
   }
-}
+}*/
 
 void gettemperature() {
   // Wait at least 2 seconds seconds between measurements.
@@ -117,17 +124,16 @@ void loop() {
     char c = client.read();
     Serial.write(c);
   }*/
-
-  // if ten seconds have passed since your last connection,
-  // then connect again and send data:
-  if (millis() - lastConnectionTime > postingInterval) {
+  delay(5000);
     //httpRequest();
     gettemperature();
     Serial.print("t : ");
     Serial.println(temp_f);
     Serial.print("H : ");
     Serial.println(humidity);
-  }
-
+    mqttClient.connect("ESP1");
+    char temp_c[20];
+    sprintf(temp_c, "%f", temp_f);
+    mqttClient.publish("node/temp",temp_c);           
 }
 
