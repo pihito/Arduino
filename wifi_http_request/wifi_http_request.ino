@@ -141,6 +141,6 @@ void loop() {
     jsonStr.concat(",\"hum\":");
     jsonStr.concat(hum_c);
     jsonStr.concat("}");
-    mqttClient.publish("node/temp",jsonStr);           
+    mqttClient.publish("SebHome/HugoRoom",jsonStr);           
 }
 
