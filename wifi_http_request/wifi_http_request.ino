@@ -1,7 +1,7 @@
-#include <MQTT.h>
 #include <PubSubClient.h>
 
 #include <ESP8266WiFi.h>
+
 #include <DHT.h>
 
 
@@ -18,23 +18,15 @@
 //const char* ssid     = "DARKSIDE";
 //const char* password = "8353481dd463";
 
-const char* ssid     = "MySensorNetwork";
-const char* password = "SebSensor";
-
-const char* host = "www.google.fr";
-const char* streamId   = "....................";
-const char* privateKey = "....................";
-
+const char* ssid     = "MY_SENSOR_NETWORK";
+const char* password = "12345678";
 
  
 // server address:
-
-char server[] = "192.168.61.1";
-char mqttServer[] = "192.168.61.1";
-
+IPAddress mqttServer(192, 168, 20, 1);
 
 WiFiClient wclient;
-PubSubClient mqttClient(wclient, mqttServer);
+PubSubClient mqttClient(mqttServer,1883,wclient);
 
 unsigned long lastConnectionTime = 0;            // last time you connected to the server, in milliseconds
 const unsigned long postingInterval = 10L * 1000L; // delay between updates, in milliseconds
@@ -141,6 +133,6 @@ void loop() {
     jsonStr.concat(",\"hum\":");
     jsonStr.concat(hum_c);
     jsonStr.concat("}");
-    mqttClient.publish("SebHome/HugoRoom",jsonStr);           
+    mqttClient.publish("SebHome/HugoRoom",jsonStr.c_str());           
 }
 
