@@ -1,7 +1,8 @@
+#include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 
 
-#include <Wire.h> 
+
 
 // Set the pins on the I2C chip used for LCD connections:
 //                    addr, en,rw,rs,d4,d5,d6,d7,bl,blpol
@@ -21,7 +22,7 @@ void setup()
   }
   lcd.backlight();
   lcd.setCursor(0,0); 
-  lcd.print("Hello, world!");
+  lcd.print("love lolo");
 }
 
 void loop() 
