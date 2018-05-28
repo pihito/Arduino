@@ -85,4 +85,8 @@ void loop() {
     } while( u8g.nextPage() );
    }
   delay(5000);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 27bc503e7bd5b8af67db55fa7c765df5828e5685

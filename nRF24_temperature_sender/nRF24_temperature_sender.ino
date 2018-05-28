@@ -61,4 +61,8 @@ void loop() {
     Serial.println("Erreur de lecture DTH22");
   }
   delay(5000); 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 27bc503e7bd5b8af67db55fa7c765df5828e5685
